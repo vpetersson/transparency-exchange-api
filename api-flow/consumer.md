@@ -28,32 +28,75 @@ find the list of artefacts for the used version.
 ## API flow
 
 ```mermaid
----
-title: TEA consumer
----
-
 sequenceDiagram
     autonumber
     actor user
-    participant discovery as TEA Discovery with TEI
-
+    participant discovery as TEA Discovery
     participant tea_product as TEA Product
     participant tea_leaf as TEA Leaf
     participant tea_collection as TEA Collection
     participant tea_artifact as TEA Artefact
 
+    Note over user,discovery: DNS-based discovery
+    user ->> discovery: DNS lookup using TEI
+    discovery -->> user: API server endpoints returned
 
-    user ->> discovery: Discovery using DNS
-    discovery ->> user: List of API servers
+    Note over user,tea_product: List all products
+    user ->> tea_product: GET to /v1/product
+    tea_product -->> user: List of products returned (paginated)
 
-    user ->> tea_product: Finding all product parts
-    tea_product ->> user: List of product parts
+    Note over user,tea_product: Get specific product information
+    user ->> tea_product: GET to /v1/product/{tea_product_identifier}
+    tea_product -->> user: Product details with leaf references returned
 
-    user ->> tea_leaf: Finding all versions of a part
-    tea_leaf ->> user: List of all available versions (paginated)
+    Note over user,tea_leaf: Get version information
+    user ->> tea_leaf: GET to /v1/leaf?tea_product_identifier={product_id}
+    tea_leaf -->> user: List of available versions returned (paginated)
 
-    user ->> tea_collection: Finding all artefacts for version in scope
-    tea_collection ->> user: List of artefacts and formats available for each artefact
+    Note over user,tea_collection: Get artifacts for specific version
+    user ->> tea_collection: GET to /v1/collection/{tea_collection_identifier}
+    tea_collection -->> user: Collection with available artifacts returned
 
-    user ->> tea_artifact: Download artefact
+    Note over user,tea_artifact: Download specific artifact
+    user ->> tea_artifact: GET to artifact URL
+    tea_artifact -->> user: Artifact content returned
 ```
+
+## Simplified workflow: Retrieving the latest SBOM using a TEI (EAN barcode)
+
+For many consumer use cases, the goal is simply to retrieve the latest SBOM for a product identified by a TEI (such as an EAN barcode). Here's a simplified workflow for this common scenario:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor user
+    participant tea_product as TEA Product
+    participant tea_leaf as TEA Leaf
+    participant tea_collection as TEA Collection
+    participant tea_artifact as TEA Artefact
+
+    Note over user,tea_product: Lookup product by barcode
+    user ->> tea_product: GET to /v1/product?barcode={barcode}
+    tea_product -->> user: Product details with identifier returned
+
+    Note over user,tea_leaf: Get leaf for product
+    user ->> tea_leaf: GET to /v1/leaf?tea_product_identifier={product_id}
+    tea_leaf -->> user: Leaf details with collection references returned
+
+    Note over user,tea_collection: Get collection with artifacts
+    user ->> tea_collection: GET to /v1/collection/{tea_collection_identifier}
+    tea_collection -->> user: Collection with artifacts returned
+
+    Note over user,tea_artifact: Download SBOM
+    user ->> tea_artifact: GET to artifact URL (for artifact with type="bom")
+    tea_artifact -->> user: SBOM content returned
+```
+
+This simplified workflow focuses on the most common consumer use case: retrieving the latest SBOM for a product using its TEI (such as an EAN barcode). The process involves:
+
+1. Querying the product API with the TEI (barcode) to get the product identifier
+2. Retrieving the latest leaf version by sorting by release date
+3. Getting the collection for that leaf version
+4. Downloading the SBOM artifact from the collection
+
+This approach minimizes the number of API calls needed while ensuring the consumer gets the most up-to-date SBOM information available for the product.

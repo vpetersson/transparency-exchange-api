@@ -15,7 +15,7 @@
 ## From product identifier to API endpoint
 
 TEA Discovery is the connection between a product identifier and the API
-endpoint. A "product" is something that the customer aquires or downloads. It
+endpoint. A "product" is something that the customer acquires or downloads. It
 can be a bundle of many digital devices or software applications. A "product"
 normally also has an entry in a large corporation's asset inventory system.
 
