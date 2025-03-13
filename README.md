@@ -129,3 +129,31 @@ the specification supports all the necessary xBOM types along with CDXA.
 
 - [The CycloneDX BOM Exchange API](/api/bomexchangeapi.md) Implemented in the
   [CycloneDX BOM Repo Server](https://github.com/CycloneDX/cyclonedx-bom-repo-server)
+
+## Contributing
+
+### Markdown Formatting
+
+This repository uses a Rust-based Markdown formatter (dprint) to ensure
+consistent documentation formatting. When submitting pull requests that include
+Markdown files, the formatter will automatically check for formatting issues.
+
+To run the formatter locally:
+
+1. Install dprint:
+   ```bash
+   cargo install dprint
+   ```
+
+2. Check for formatting issues:
+   ```bash
+   dprint check "**/*.md"
+   ```
+
+3. Automatically format all Markdown files:
+   ```bash
+   dprint fmt "**/*.md"
+   ```
+
+The formatter enforces a maximum line length of 80 characters and consistent
+formatting across all Markdown files.
