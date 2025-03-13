@@ -1,8 +1,8 @@
 {
-  "lineWidth": 120,
+  "lineWidth": 80,
   "markdown": {
     "textWrap": "always",
-    "lineWidth": 120
+    "lineWidth": 80
   },
   "includes": ["**/*.md"],
   "excludes": [

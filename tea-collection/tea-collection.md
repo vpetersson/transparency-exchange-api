@@ -1,24 +1,30 @@
 # The TEA Collection object (TCO)
 
-For each product and version there is a Tea Collection object, which is a list of available artifacts for this specific
-version. The TEA Index is a list of TEA collections.
+For each product and version there is a Tea Collection object, which is a list
+of available artifacts for this specific version. The TEA Index is a list of TEA
+collections.
 
-The TEA collection is normally created by the TEA application server at publication time of artifacts. The publisher may
-sign the collection object as a JSON file at time of publication.
+The TEA collection is normally created by the TEA application server at
+publication time of artifacts. The publisher may sign the collection object as a
+JSON file at time of publication.
 
-If there are any updates of artifacts within a collection for the same version of a product, then a new TEA Collection
-object is created and signed. This update will have the same UUID, but a new version number. A reason for the update
-will have to be provided. This shall be used to correct mistakes, spelling errors as well as to provide new information
-on dynamic artifact types such as LCE or VEX. If the product is modified, that is a new product version and that should
-generate a new collection object with a new UUID and updated metadata.
+If there are any updates of artifacts within a collection for the same version
+of a product, then a new TEA Collection object is created and signed. This
+update will have the same UUID, but a new version number. A reason for the
+update will have to be provided. This shall be used to correct mistakes,
+spelling errors as well as to provide new information on dynamic artifact types
+such as LCE or VEX. If the product is modified, that is a new product version
+and that should generate a new collection object with a new UUID and updated
+metadata.
 
 ## Dynamic or static Collection objects
 
-The TCO is produced by the TEA software platform. There are two ways to implement this:
+The TCO is produced by the TEA software platform. There are two ways to
+implement this:
 
 - **Dynamic**: The TCO is built for each API request and created dynamically.
-- **Static**: The TCO is built at publication time as a static object by the publisher. This object can be digitally
-  signed at publication time.
+- **Static**: The TCO is built at publication time as a static object by the
+  publisher. This object can be digitally signed at publication time.
 
 ## Collection object
 
@@ -50,7 +56,8 @@ The artifact object has the following parts
   - Name
   - Email
   - Organisation
-- List of objects with the same content, but in different formats. The order of the list has no significance.
+- List of objects with the same content, but in different formats. The order of
+  the list has no significance.
   - UUID for subdoc
   - Optional BOM identifier
     - SPDX or CycloneDX reference to BOM
